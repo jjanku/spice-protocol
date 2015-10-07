@@ -91,6 +91,8 @@ enum {
     VD_AGENT_CLIENT_DISCONNECTED,
     VD_AGENT_MAX_CLIPBOARD,
     VD_AGENT_AUDIO_VOLUME_SYNC,
+    VD_AGENT_SEAMLESS_MODE,
+    VD_AGENT_SEAMLESS_MODE_LIST,
     VD_AGENT_END_MESSAGE,
 };
 
@@ -247,6 +249,22 @@ typedef struct SPICE_ATTR_PACKED VDAgentAudioVolumeSync {
     uint16_t volume[0];
 } VDAgentAudioVolumeSync;
 
+typedef struct SPICE_ATTR_PACKED VDAgentSeamlessMode {
+    uint8_t enabled;
+} VDAgentSeamlessMode;
+
+typedef struct SPICE_ATTR_PACKED VDAgentSeamlessModeWindow {
+    int32_t x;
+    int32_t y;
+    uint32_t w;
+    uint32_t h;
+} VDAgentSeamlessModeWindow;
+
+typedef struct SPICE_ATTR_PACKED VDAgentSeamlessModeList {
+    uint32_t num_of_windows;
+    VDAgentSeamlessModeWindow windows[0];
+} VDAgentSeamlessModeList;
+
 enum {
     VD_AGENT_CAP_MOUSE_STATE = 0,
     VD_AGENT_CAP_MONITORS_CONFIG,
@@ -263,6 +281,7 @@ enum {
     VD_AGENT_CAP_MONITORS_CONFIG_POSITION,
     VD_AGENT_CAP_FILE_XFER_DISABLED,
     VD_AGENT_CAP_FILE_XFER_DETAILED_ERRORS,
+    VD_AGENT_CAP_SEAMLESS_MODE,
     VD_AGENT_END_CAP,
 };
 
