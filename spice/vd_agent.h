@@ -93,6 +93,7 @@ enum {
     VD_AGENT_AUDIO_VOLUME_SYNC,
     VD_AGENT_SEAMLESS_MODE,
     VD_AGENT_SEAMLESS_MODE_LIST,
+    VD_AGENT_SEAMLESS_MODE_CHANGE,
     VD_AGENT_END_MESSAGE,
 };
 
@@ -258,6 +259,7 @@ typedef struct SPICE_ATTR_PACKED VDAgentSeamlessModeWindow {
     int32_t y;
     uint32_t w;
     uint32_t h;
+    uint64_t id;
 } VDAgentSeamlessModeWindow;
 
 typedef struct SPICE_ATTR_PACKED VDAgentSeamlessModeList {
