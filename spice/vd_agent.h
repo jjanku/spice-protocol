@@ -95,8 +95,30 @@ enum {
     VD_AGENT_SELECTION_REQUEST,
     VD_AGENT_SELECTION_DATA,
     VD_AGENT_SELECTION_RELEASE,
+    VD_AGENT_DND_STATUS,
     VD_AGENT_END_MESSAGE,
 };
+
+enum {
+    VD_AGENT_DND_STATUS_BEGIN_SUCCESS,
+    VD_AGENT_DND_STATUS_BEGIN_ERROR,
+    VD_AGENT_DND_STATUS_DROP_SUCCESS,
+    VD_AGENT_DND_STATUS_DROP_FAILED,
+    /* Host sends these messages to guest
+     * when pointer with pressed button leaves
+     * SpiceDisplay.
+     * Quest either ignores these messages, or
+     * responds with VD_AGENT_SELECTION_GRAB msg,
+     * selection set to VD_AGENT_DND_SELECTION to
+     * start drag from quest to host.
+     */
+    VD_AGENT_DND_STATUS_MOUSE_LEAVE,
+    VD_AGENT_DND_STATUS_MOUSE_ENTER,
+};
+
+typedef struct SPICE_ATTR_PACKED VDAgentDNDStatusMessage {
+    uint32_t status;
+} VDAgentDNDStatusMessage;
 
 enum {
     VD_AGENT_FILE_XFER_STATUS_CAN_SEND_DATA,
@@ -215,6 +237,7 @@ enum {
     VD_AGENT_CLIPBOARD_SELECTION_CLIPBOARD = 0,
     VD_AGENT_CLIPBOARD_SELECTION_PRIMARY,
     VD_AGENT_CLIPBOARD_SELECTION_SECONDARY,
+    VD_AGENT_DND_SELECTION,
 };
 
 typedef struct SPICE_ATTR_PACKED VDAgentClipboardGrab {
@@ -254,7 +277,7 @@ typedef struct SPICE_ATTR_PACKED VDAgentAudioVolumeSync {
 
 /* Following VDAgentSelection* messages are intended as a
  * more general replacement for VDAgentClipboard* messages.
- * Selection can be any of VD_AGENT_CLIPBOARD_SELECTION_*
+ * Selection can be any of VD_AGENT_CLIPBOARD_SELECTION_* or VD_AGENT_DND_SELECTION
  * and is always included (unlike VDAgentClipboard* messages).
  * Type of data is represented by NULL-terminated string (e.g. "TEXT\0").
  * Agents with VD_AGENT_CAP_SELECTION_DATA must be able to fully handle these.
@@ -302,6 +325,7 @@ enum {
     VD_AGENT_CAP_FILE_XFER_DISABLED,
     VD_AGENT_CAP_FILE_XFER_DETAILED_ERRORS,
     VD_AGENT_CAP_SELECTION_DATA,
+    VD_AGENT_CAP_DND,
     VD_AGENT_END_CAP,
 };
 
