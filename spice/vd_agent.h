@@ -91,6 +91,10 @@ enum {
     VD_AGENT_CLIENT_DISCONNECTED,
     VD_AGENT_MAX_CLIPBOARD,
     VD_AGENT_AUDIO_VOLUME_SYNC,
+    VD_AGENT_SELECTION_GRAB,
+    VD_AGENT_SELECTION_REQUEST,
+    VD_AGENT_SELECTION_DATA,
+    VD_AGENT_SELECTION_RELEASE,
     VD_AGENT_END_MESSAGE,
 };
 
@@ -248,6 +252,39 @@ typedef struct SPICE_ATTR_PACKED VDAgentAudioVolumeSync {
     uint16_t volume[0];
 } VDAgentAudioVolumeSync;
 
+/* Following VDAgentSelection* messages are intended as a
+ * more general replacement for VDAgentClipboard* messages.
+ * Selection can be any of VD_AGENT_CLIPBOARD_SELECTION_*
+ * and is always included (unlike VDAgentClipboard* messages).
+ * Type of data is represented by NULL-terminated string (e.g. "TEXT\0").
+ * Agents with VD_AGENT_CAP_SELECTION_DATA must be able to fully handle these.
+ */
+typedef struct SPICE_ATTR_PACKED VDAgentSelectionGrab {
+    uint8_t selection;
+    /* list of advertised targets (MIME types / GdkAtoms)
+     * e.g. "STRING\0TEXT\0UTF8_STRING\0"
+     */
+    uint8_t targets[0];
+} VDAgentSelectionGrab;
+
+typedef struct SPICE_ATTR_PACKED VDAgentSelectionRequest {
+    uint8_t selection;
+    /* requested MIME type of data */
+    uint8_t target[0];
+} VDAgentSelectionRequest;
+
+typedef struct SPICE_ATTR_PACKED VDAgentSelectionData {
+    uint8_t selection;
+    /*  number of bits per data unit */
+    int32_t format;
+    /* the actual data, prefixed by it's MIME type */
+    uint8_t data[0];
+} VDAgentSelectionData;
+
+typedef struct SPICE_ATTR_PACKED VDAgentSelectionRelease {
+    uint8_t selection;
+} VDAgentSelectionRelease;
+
 enum {
     VD_AGENT_CAP_MOUSE_STATE = 0,
     VD_AGENT_CAP_MONITORS_CONFIG,
@@ -264,6 +301,7 @@ enum {
     VD_AGENT_CAP_MONITORS_CONFIG_POSITION,
     VD_AGENT_CAP_FILE_XFER_DISABLED,
     VD_AGENT_CAP_FILE_XFER_DETAILED_ERRORS,
+    VD_AGENT_CAP_SELECTION_DATA,
     VD_AGENT_END_CAP,
 };
 
