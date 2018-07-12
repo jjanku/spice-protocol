@@ -91,6 +91,7 @@ enum {
     VD_AGENT_CLIENT_DISCONNECTED,
     VD_AGENT_MAX_CLIPBOARD,
     VD_AGENT_AUDIO_VOLUME_SYNC,
+    VD_AGENT_GUEST_NOTIFICATION,
     VD_AGENT_END_MESSAGE,
 };
 
@@ -248,6 +249,11 @@ typedef struct SPICE_ATTR_PACKED VDAgentAudioVolumeSync {
     uint16_t volume[0];
 } VDAgentAudioVolumeSync;
 
+typedef struct SPICE_ATTR_PACKED VDAgentGuestNotification {
+    /* app_name, summary, body */
+    uint8_t data[0];
+} VDAgentGuestNotification;
+
 enum {
     VD_AGENT_CAP_MOUSE_STATE = 0,
     VD_AGENT_CAP_MONITORS_CONFIG,
@@ -264,6 +270,7 @@ enum {
     VD_AGENT_CAP_MONITORS_CONFIG_POSITION,
     VD_AGENT_CAP_FILE_XFER_DISABLED,
     VD_AGENT_CAP_FILE_XFER_DETAILED_ERRORS,
+    VD_AGENT_CAP_GUEST_NOTIFICATIONS,
     VD_AGENT_END_CAP,
 };
 
